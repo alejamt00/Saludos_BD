@@ -1,5 +1,9 @@
 package com.example.saludos_bd;
 
+/**
+ * Clase de constantes tipo strings necesarios o recomendables para el uso y
+ * modificacion de la base de datos
+ */
 public class EstructuraBBDD {
 
     public static final String TABLE_DATOS_PERSONALES = "usuarios";
@@ -16,14 +20,16 @@ public class EstructuraBBDD {
             "DROP TABLE IF EXISTS " + EstructuraBBDD.TABLE_DATOS_PERSONALES;
 
     public static final String[] projection = {
-            EstructuraBBDD.COLUMN_ID,
             EstructuraBBDD.COLUMN_NAME,
             EstructuraBBDD.COLUMN_PASS};
 
-    public static final String selection =
-            EstructuraBBDD.COLUMN_NAME+" = ? AND " + EstructuraBBDD.COLUMN_PASS+ " = ?";
+    public static final String selectionUpdate =
+            EstructuraBBDD.COLUMN_NAME + " = ? AND " + EstructuraBBDD.COLUMN_PASS+ " = ?";
 
-    public static final String[] selectionArgs = {"Nombre"};
+    public static final String selection =
+            EstructuraBBDD.COLUMN_NAME + " = ?";
+    public static final String sortOrder = EstructuraBBDD.COLUMN_PASS + " DESC";
+
 
 
 

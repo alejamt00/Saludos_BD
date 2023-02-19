@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+/**
+ * Clase BaseDatosHelper, que extiende de SQLiteOpenHelper, necesario para usar y crear la base de datos
+ */
 public class BaseDatosHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "saludos";

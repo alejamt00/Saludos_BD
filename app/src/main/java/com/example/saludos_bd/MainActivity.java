@@ -9,6 +9,11 @@ public class MainActivity extends AppCompatActivity {
 
     public FragmentTransaction ft;
 
+
+    /**
+     * MainActivity, encargado de cargar en el onCreate el FragmentoMain
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

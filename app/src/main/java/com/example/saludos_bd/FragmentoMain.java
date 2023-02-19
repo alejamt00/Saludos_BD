@@ -13,13 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentoMain#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragmento main
+ * Si existe un usuario con el mismo nombre, muestra error; Si no, se va a
+ * otro fragmento y después de insertar dicho nombre en la base de datos, procede a
+ * actualizarlo concatenandole "_DAM"
  */
 public class FragmentoMain extends Fragment {
 
@@ -27,17 +29,28 @@ public class FragmentoMain extends Fragment {
     SQLiteDatabase dbW;
     SQLiteDatabase dbR;
 
+    /**
+     * Constructor, sin uso
+     */
     public FragmentoMain() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Constructor, sin uso
+     */
     public static FragmentoMain newInstance() {
         FragmentoMain fragment = new FragmentoMain();
 
         return fragment;
     }
 
+    /**
+     * Método onCreate
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +58,9 @@ public class FragmentoMain extends Fragment {
     }
 
     /**
-     * Crea boton enviar y cuadros de texto de nombre y edad necesarios para acceder al fragmentoedad,
-     * al que se accede cuando se da al botón con la info de nombre y edad dados
+     * Crea boton enviar y cuadros de texto de nombre y pass necesarios para acceder al fragmentoUserInfo,
+     * al que se accede cuando se da al botón con la info de nombre y pass dados solo si no existe
+     * dicho nombre en la BD.
      *
      * @param inflater
      * @param container
@@ -68,9 +82,6 @@ public class FragmentoMain extends Fragment {
         dbR = dbHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
 
-
-
-
         btEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,16 +90,17 @@ public class FragmentoMain extends Fragment {
                         EstructuraBBDD.TABLE_DATOS_PERSONALES,
                         EstructuraBBDD.projection,
                         EstructuraBBDD.selection,
-                        EstructuraBBDD.selectionArgs,
+                        new String[]{tvName.getText().toString()},
                         null,
                         null,
-                        null
+                        EstructuraBBDD.sortOrder
                 );
 
                 Boolean enc = false;
 
-                if(cursor.moveToFirst()){
+                if(!cursor.isAfterLast()){
                     enc = true;
+                    cursor.moveToNext();
                 }
 
                 if(!enc){
@@ -99,8 +111,9 @@ public class FragmentoMain extends Fragment {
                     FragmentoUserInfo fe = FragmentoUserInfo.newInstance(tvName.getText().toString(), tvPass.getText().toString());
                     ft.replace(android.R.id.content, fe).addToBackStack(null).commit();
                 } else {
-                    Snackbar sb = Snackbar.make(getView().findViewById(R.id.layoutMain),"¡Ese usuario ya existe!", Snackbar.LENGTH_SHORT);
-                    sb.show();
+                    Toast toast=Toast.makeText(getContext(),"¡Ese usuario ya existe!",Toast.LENGTH_SHORT);
+                    toast.setMargin(50,50);
+                    toast.show();
                 }
 
 
